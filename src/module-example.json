@@ -1,0 +1,10 @@
+{
+  "root": "<dir>/var/jomi/",
+  "files":[
+    "style.css",
+    "controls.css"
+  ],
+  "into":"app.min.css",
+  "type":"css",
+  "updated": 1558896289
+}
