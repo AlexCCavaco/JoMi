@@ -49,7 +49,7 @@ class JoMiModule {
     protected function setData(){
         $prev_root = $this->root;
         if(isset($this->data['root'])) $this->root = $this->data['root'];
-        $this->root = str_replace(['<dir>','<root>','//'],[__dir__.'/../../..',$prev_root,'/'],$this->root);
+        $this->root = str_replace(['<dir>','<root>','//'],[__dir__.'/../../../..',$prev_root,'/'],$this->root);
 
         if(!isset($this->data['into'])||$this->data['into']==false) throw new \Exception('No [into] File set on Module File on "'.$this->location.'"!');
         $this->into = $this->root.$this->data['into'];

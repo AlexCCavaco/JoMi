@@ -7,8 +7,8 @@ use MatthiasMullie\Minify;
 class JoMi {
 
     protected static $settings = [
-        "moduleFilesLocation" => __dir__."/../../../var/jomi/",
-        "fileBasePath" => __dir__."/../../../"
+        "moduleFilesLocation" => __dir__."/../../../../var/jomi/",
+        "fileBasePath" => __dir__."/../../../../"
     ];
 
     /**
@@ -16,7 +16,7 @@ class JoMi {
      * @throws \Exception
      */
     static function runModule($name){
-        if(self::$settings['moduleFilesLocation']===null) $moduleLocation = __dir__."/../../../var/jomi/".$name.'.json';
+        if(self::$settings['moduleFilesLocation']===null) $moduleLocation = __dir__."/../../../../var/jomi/".$name.'.json';
         else $moduleLocation = self::$settings['moduleFilesLocation'].$name.'.json';
         $root = '';
         if(isset(self::$settings['fileBasePath'])) $root = self::$settings['fileBasePath'];
