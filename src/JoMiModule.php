@@ -56,7 +56,6 @@ class JoMiModule {
         foreach($this->sets as $set){
             $up = $set->run()||$up;
             $data[] = $set->getData();
-            echo 'SET: '.($up?'true':'false').PHP_EOL;
         }
         if($save&&$up) return $this->save($data);
         return true;
@@ -67,7 +66,7 @@ class JoMiModule {
      * @return bool
      */
     public function save($data){
-        return file_put_contents($this->location,json_encode(['var'=>$this->vars,'join'=>$data]))!==false;
+        return file_put_contents($this->location,json_encode(['var'=>$this->vars,'join'=>$data],JSON_PRETTY_PRINT))!==false;
     }
 
     /**

@@ -30,7 +30,7 @@ class JoMiSet {
      * @return bool
      * @throws \Exception
      */
-    public function run(){echo 'HELLO'.PHP_EOL;
+    public function run(){
         $vars = $this->vars;
         if(isset($this->data['var'])){
             foreach($this->data['var'] as $var=>$val){
@@ -48,10 +48,6 @@ class JoMiSet {
 
         if(!isset($this->data['into'])) throw new \Exception('No [into] File set on Module File on "'.$this->location.'"!');
         $into = $this->insertParameters($this->data['into'],$vars);
-
-        echo 'update: '.($update?'true':'false').PHP_EOL;
-        foreach($files as $file) echo 'file: '.$file.PHP_EOL;
-        echo 'into: '.$into.PHP_EOL;
 
         if($update){
             $type = $this->data['type']??strtolower(pathinfo($into,PATHINFO_EXTENSION));
