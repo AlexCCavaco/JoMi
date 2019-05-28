@@ -46,6 +46,9 @@ Thumbs.db
 *.tar
 *.zip
 
+# specific files
+composer.lock
+
 # -------------------------
 # BEGIN Whitelisted Files
 # -------------------------

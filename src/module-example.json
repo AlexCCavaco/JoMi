@@ -1,10 +1,23 @@
-{
-  "root": "<dir>/var/jomi/",
-  "files":[
-    "style.css",
-    "controls.css"
-  ],
-  "into":"app.min.css",
-  "type":"css",
-  "updated": 1558896289
-}
+[
+  {
+    "root": "<dir>/var/jomi/",
+    "files":[
+      "style.css",
+      "controls.css"
+    ],
+    "into":"app.min.css",
+    "type":"css",
+    "updated": 1558896289
+  },
+  {
+    "root": "<dir>/var/jomi/",
+    "files":[
+      "script.js",
+      "apps.js",
+      "apps/controls.js"
+    ],
+    "into":"app.min.js",
+    "type":"js",
+    "updated": 1558896289
+  }
+]
