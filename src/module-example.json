@@ -1,23 +1,30 @@
-[
-  {
-    "root": "<dir>/var/jomi/",
-    "files":[
-      "style.css",
-      "controls.css"
-    ],
-    "into":"app.min.css",
-    "type":"css",
-    "updated": 1558896289
+{
+  "var":{
+    "public": "{root}/public",
+    "var": "{root}/var"
   },
-  {
-    "root": "<dir>/var/jomi/",
-    "files":[
-      "script.js",
-      "apps.js",
-      "apps/controls.js"
-    ],
-    "into":"app.min.js",
-    "type":"js",
-    "updated": 1558896289
-  }
-]
+  "set":[
+    {
+      "files":[
+        "{var}/test1.css",
+        "{var}/test2.css"
+      ],
+      "into": "{public}/test.min.css",
+      "type": "css",
+      "updated": 1558896289
+    },
+    {
+      "var":{
+        "public": "{root}/public/"
+      },
+      "files":[
+        "{var}/test1.js",
+        "{var}/test2.js",
+        "{var}/test3.js"
+      ],
+      "into": "{public}/test.min.js",
+      "type": "js",
+      "updated": 1558896289
+    }
+  ]
+}

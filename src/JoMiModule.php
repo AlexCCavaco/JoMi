@@ -6,29 +6,25 @@ class JoMiModule {
 
     private $name;
     private $location;
+    private $baseDir = '';
 
     /**
      * @var JoMiSet[]
      */
     private $sets = [];
-
-    private $root = '';
-    private $files = [];
-    private $into = '';
-    private $updated = true;
-    private $type = '';
+    private $vars = [];
 
     /**
      * JoMiModule constructor
      * @param string $name
      * @param string $location
-     * @param string $root
+     * @param string $baseDir
      * @throws \Exception
      */
-    public function __construct($name,$location,$root=''){
+    public function __construct($name,$location,$baseDir=''){
         $this->name = $name;
-        $this->location = $location;
-        $this->root = $root;
+        $this->location = $location.'/'.$name.'.json';
+        $this->baseDir = $baseDir;
         $this->loadModule();
     }
 
@@ -41,19 +37,28 @@ class JoMiModule {
         if($contents===false) throw new \Exception('Error Reading Module File on "'.$this->location.'"!');
         $data = json_decode($contents,true);
         if($data===false) throw new \Exception('Error Reading Module File on "'.$this->location.'"!');
-        foreach($data as $set) $this->sets[] = new JoMiSet($set,$this->location);
+        $root = __dir__.'/../../../../'; $vars = ['root'=>$root,'base'=>$this->baseDir];
+        if(isset($data['var'])){
+            $this->vars = $data['var'];
+            foreach($data['var'] as $var=>$val) $vars[$var] = $this->insertParameters($val,$vars);
+        }
+        if(empty($data['join']??[])) throw new \Exception('No set of files to join on Module File on "'.$this->location.'"!');
+        foreach($data['join'] as $set) $this->sets[] = new JoMiSet($set,$this->location,$vars);
     }
 
     /**
      * @param bool $save
      * @return bool
+     * @throws \Exception
      */
     public function run($save=true){
-        $data = [];
+        $data = []; $up = false;
         foreach($this->sets as $set){
-            $data[] = $set->run();
+            $up = $set->run()||$up;
+            $data[] = $set->getData();
+            echo 'SET: '.($up?'true':'false').PHP_EOL;
         }
-        if($save) $this->save($data);
+        if($save&&$up) return $this->save($data);
         return true;
     }
 
@@ -62,7 +67,19 @@ class JoMiModule {
      * @return bool
      */
     public function save($data){
-        return file_put_contents($this->location,json_encode($data))!==false;
+        return file_put_contents($this->location,json_encode(['var'=>$this->vars,'join'=>$data]))!==false;
+    }
+
+    /**
+     * @param string $path
+     * @param array $params
+     * @return string
+     */
+    protected function insertParameters(string $path,array $params){
+        $path = preg_replace_callback('/{(.*?)}/',function($match) use ($params){
+            return $params[$match[1]]??'';
+        },$path);
+        return str_replace('//','/',$path);
     }
 
 }
