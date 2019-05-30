@@ -19,10 +19,12 @@ class JoMiModule {
      * @param string $name
      * @param string $location
      * @param string $baseDir
+     * @param array $vars
      * @throws \Exception
      */
-    public function __construct($name,$location,$baseDir=''){
+    public function __construct($name,$location,$baseDir='',$vars=[]){
         $this->name = $name;
+        $this->vars = $vars;
         $this->location = $location.'/'.$name.'.json';
         $this->baseDir = $baseDir;
         $this->loadModule();
@@ -39,7 +41,8 @@ class JoMiModule {
         if($data===false) throw new \Exception('Error Reading Module File on "'.$this->location.'"!');
         $root = __dir__.'/../../../../'; $vars = ['root'=>$root,'base'=>$this->baseDir];
         if(isset($data['var'])){
-            $this->vars = $data['var'];
+            if(empty($this->vars)) $this->vars = $data['var'];
+            else $this->vars = array_merge($this->vars,$data['var']);
             foreach($data['var'] as $var=>$val) $vars[$var] = $this->insertParameters($val,$vars);
         }
         if(empty($data['join']??[])) throw new \Exception('No set of files to join on Module File on "'.$this->location.'"!');
@@ -76,6 +79,8 @@ class JoMiModule {
      */
     protected function insertParameters(string $path,array $params){
         $path = preg_replace_callback('/{(.*?)}/',function($match) use ($params){
+            if(!isset($params[$match[1]]))
+                trigger_error("Variable \"{$match[1]}\" doesn't exist in module or globally!",E_USER_WARNING);
             return $params[$match[1]]??'';
         },$path);
         return str_replace('//','/',$path);
