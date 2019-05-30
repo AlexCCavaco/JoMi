@@ -15,8 +15,8 @@ class JoMi {
         $this->vars = $vars;
     }
 
-    public static function runModule($name,$settings=[]){
-        $mod = new self($settings);
+    public static function runModule($name,$settings=[],$vars=[]){
+        $mod = new self($settings,$vars);
         $module = new JoMiModule($name,self::$module_location,self::$file_base_path,$mod->vars);
         $mod->run($module);
     }
