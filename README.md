@@ -15,10 +15,10 @@ composer require alexccavaco/jomi
 The basic/easy way of running JoMi is as follows:
 
 ```
-JoMi::runModule($name, $config);
+JoMi::runModule($name, $config, $vars);
 ```
 
-JoMi::runModule() takes two arguments. The first represents the name of the module and the second is a configuration array.
+JoMi::runModule() takes three arguments. The first represents the name of the module and is required, the second is a configuration array and the third an array o variables (to be used to ease file paths). The last two are optional.
 
 Configurations:
 - "module-location" - Represents the folder where modules are stored
