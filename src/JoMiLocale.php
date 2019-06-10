@@ -23,7 +23,7 @@ class JoMiLocale {
      * @param array $vars
      * @throws \Exception
      */
-    public function __construct($name,$location,$vars=[]){
+    public function __construct($name,$location,array $vars=[]){
         $this->name = $name;
         foreach($vars as $var) $this->vars[] = $this->insertParameters($var,$this->vars);
         $this->location = $location.'/jomi-mods.json';

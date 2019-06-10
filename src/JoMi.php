@@ -13,10 +13,10 @@ class JoMi {
      * @param array $vars
      * @return JoMiLocale
      */
-    public static function runUsing($name,$settings=[],$vars=[]){
+    public static function runUsing($name,$settings=[],array $vars=[]){
         self::set($settings);
-        $vars['base'] = self::$file_base_path;
-        return new JoMiLocale($name,self::$module_location,self::$file_base_path,$vars);
+        $vars = array_merge(['base'=>self::$file_base_path],$vars);
+        return new JoMiLocale($name,self::$module_location,$vars);
     }
 
     /**
@@ -25,7 +25,7 @@ class JoMi {
      * @param array $vars
      * @return bool
      */
-    public static function runModule($name,$settings=[],$vars=[]){
+    public static function runModule($name,$settings=[],array $vars=[]){
         self::set($settings);
         $vars['base'] = self::$file_base_path;
         return (new JoMiModule($name,self::$module_location,self::$file_base_path,$vars))->run(true);
