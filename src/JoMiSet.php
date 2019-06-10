@@ -6,59 +6,62 @@ use MatthiasMullie\Minify;
 
 class JoMiSet {
 
-    private $location;
-    private $data = [];
+    private $files;
+    private $into;
+    private $type;
+
     private $vars = [];
+    private $upTime = 0;
 
     /**
      * JoMiModule constructor
-     * @param array $data
-     * @param string $location
+     * @param array $files
+     * @param string $into
+     * @param string $type
      * @param array $vars
      * @throws \Exception
      */
-    public function __construct(array $data,string $location,array $vars){
-        $this->location = $location;
-        $this->data = $data;
+    public function __construct($files,$into,$type,$vars=[]){
+        $this->type = $type;
         $this->vars = $vars;
+        $this->load($files,$into);
     }
 
-    /** @return array */
-    public function getData(){ return $this->data; }
+    /**
+     * @param array $files
+     * @param string $into
+     * @throws \Exception
+     */
+    protected function load($files,$into){
+        if(empty($this->files)) throw new \Exception('File to Minimize should not be empty.');
+        if(trim($this->into)==='') throw new \Exception('Into File should not be empty.');
+
+        foreach($files as $k=>$file){
+            $this->files[$k] = $this->insertParameters($file,$this->vars);
+            if(($mtime=filemtime($files[$k]))>$this->upTime) $this->upTime = $mtime;
+        }
+        $this->into = $this->insertParameters($into,$this->vars);
+    }
+
+    /**
+     * @param int $updated
+     * @return bool
+     */
+    public function updated($updated){
+        return $this->upTime > ($updated??0);
+    }
 
     /**
      * @return bool
      * @throws \Exception
      */
     public function run(){
-        $vars = $this->vars;
-        if(isset($this->data['var'])){
-            foreach($this->data['var'] as $var=>$val){
-                $vars[$var] = $this->insertParameters($val,$vars);
-            }
-        }
-
-        $files = $this->data['files']??[]; $utime = 0;
-        if(empty($files)) throw new \Exception('No [files] set on Module File on "'.$this->location.'"!');
-        foreach($files as $k=>$file){
-            $files[$k] = $this->insertParameters($file,$vars);
-            if(($mtime=filemtime($files[$k]))>$utime) $utime = $mtime;
-        }
-        $update = $utime > ($this->data['updated']??0);
-
-        if(!isset($this->data['into'])) throw new \Exception('No [into] File set on Module File on "'.$this->location.'"!');
-        $into = $this->insertParameters($this->data['into'],$vars);
-
-        if($update){
-            $type = $this->data['type']??strtolower(pathinfo($into,PATHINFO_EXTENSION));
-            if($type==='css') $min = new Minify\CSS();
-            elseif($type==='js') $min = new Minify\JS();
-            else throw new \Exception('File extension "'.$type.'" not supported!');
-            $min->add($files)->minify($into);
-            $this->data['updated'] = time();
-            return true;
-        }
-        return false;
+        $this->type = $this->type??strtolower(pathinfo($this->into,PATHINFO_EXTENSION));
+        if($this->type==='css') $min = new Minify\CSS();
+        elseif($this->type==='js') $min = new Minify\JS();
+        else throw new \Exception('File extension "'.$this->type.'" not supported!');
+        $min->add($this->files)->minify($this->into);
+        return true;
     }
 
     /**
@@ -68,6 +71,8 @@ class JoMiSet {
      */
     protected function insertParameters(string $path,array $params){
         $path = preg_replace_callback('/{(.*?)}/',function($match) use ($params){
+            if(!isset($params[$match[1]]))
+                trigger_error("Variable \"{$match[1]}\" doesn't exist in module or globally!",E_USER_WARNING);
             return $params[$match[1]]??'';
         },$path);
         return str_replace('//','/',$path);

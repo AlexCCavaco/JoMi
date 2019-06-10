@@ -7,22 +7,36 @@ class JoMi {
     protected static $module_location = __dir__."/../../../../var/jomi/";
     protected static $file_base_path = __dir__."/../../../../";
 
-    protected $vars=[];
+    /**
+     * @param string $name
+     * @param array $settings
+     * @param array $vars
+     * @return JoMiLocale
+     */
+    public static function runUsing($name,$settings=[],$vars=[]){
+        self::set($settings);
+        $vars['base'] = self::$file_base_path;
+        return new JoMiLocale($name,self::$module_location,self::$file_base_path,$vars);
+    }
 
-    public function __construct($settings=[],$vars=[]){
+    /**
+     * @param string $name
+     * @param array $settings
+     * @param array $vars
+     * @return bool
+     */
+    public static function runModule($name,$settings=[],$vars=[]){
+        self::set($settings);
+        $vars['base'] = self::$file_base_path;
+        return (new JoMiModule($name,self::$module_location,self::$file_base_path,$vars))->run(true);
+    }
+
+    /**
+     * @param array $settings
+     */
+    protected static function set($settings=[]){
         if(isset($settings['module-location'])) self::$module_location = $settings['module-location'];
         if(isset($settings['file-base-path'])) self::$file_base_path = $settings['file-base-path'];
-        $this->vars = $vars;
-    }
-
-    public static function runModule($name,$settings=[],$vars=[]){
-        $mod = new self($settings,$vars);
-        $module = new JoMiModule($name,self::$module_location,self::$file_base_path,$mod->vars);
-        $mod->run($module);
-    }
-
-    public function run(JoMiModule $module){
-        return $module->run(true);
     }
 
 }

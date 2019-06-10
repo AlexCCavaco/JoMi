@@ -9,7 +9,7 @@ class JoMiModule {
     private $baseDir = '';
 
     /**
-     * @var JoMiSet[]
+     * @var JoMiModuleSet[]
      */
     private $sets = [];
     private $vars = [];
@@ -46,7 +46,7 @@ class JoMiModule {
             foreach($data['var'] as $var=>$val) $vars[$var] = $this->insertParameters($val,$vars);
         }
         if(empty($data['join']??[])) throw new \Exception('No set of files to join on Module File on "'.$this->location.'"!');
-        foreach($data['join'] as $set) $this->sets[] = new JoMiSet($set,$this->location,$vars);
+        foreach($data['join'] as $set) $this->sets[] = new JoMiModuleSet($set,$this->location,$vars);
     }
 
     /**
