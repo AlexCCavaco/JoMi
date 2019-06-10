@@ -26,7 +26,7 @@ class JoMiLocale {
     public function __construct($name,$location,$vars=[]){
         $this->name = $name;
         foreach($vars as $var) $this->vars[] = $this->insertParameters($var,$this->vars);
-        $this->location = $location.'/_global.json';
+        $this->location = $location.'/jomi-mods.json';
         $this->load();
     }
 
