@@ -17,11 +17,11 @@ class JoMiSet {
      * JoMiModule constructor
      * @param array $files
      * @param string $into
-     * @param string $type
+     * @param string|null $type
      * @param array $vars
      * @throws \Exception
      */
-    public function __construct($files,$into,$type,$vars=[]){
+    public function __construct($files,$into,$type=null,$vars=[]){
         $this->type = $type;
         $this->vars = $vars;
         $this->load($files,$into);

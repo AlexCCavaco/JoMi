@@ -41,10 +41,10 @@ class JoMiLocale {
     /**
      * @param array $files
      * @param string $into
-     * @param string $type
+     * @param string|null $type
      * @return $this
      */
-    public function add($files,$into,$type){
+    public function add($files,$into,$type=null){
         $this->sets[] = $set = new JoMiSet($files,$into,$type,$this->vars);
         $this->toUpdate |= ($this->upSet[]=!$set->updated($this->updated));
         return $this;
