@@ -54,6 +54,7 @@ class JoMiModuleSet {
             if($type==='css') $min = new Minify\CSS();
             elseif($type==='js') $min = new Minify\JS();
             else throw new \Exception('File extension "'.$type.'" not supported!');
+            foreach($files as $k=>$file) if(!file_exists($file)){ trigger_error("File doesn't exist on $file!",E_USER_WARNING); unset($files[$k]); }
             $min->add($files)->minify($into);
             $this->data['updated'] = time();
             return true;

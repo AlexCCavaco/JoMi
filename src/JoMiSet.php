@@ -60,6 +60,7 @@ class JoMiSet {
         if($this->type==='css') $min = new Minify\CSS();
         elseif($this->type==='js') $min = new Minify\JS();
         else throw new \Exception('File extension "'.$this->type.'" not supported!');
+        foreach($this->files as $k=>$file) if(!file_exists($file)){ trigger_error("File doesn't exist on $file!",E_USER_WARNING); unset($this->files[$k]); }
         $min->add($this->files)->minify($this->into);
         return true;
     }
