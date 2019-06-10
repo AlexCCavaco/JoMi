@@ -27,7 +27,7 @@ class JoMi {
      */
     public static function runModule($name,$settings=[],array $vars=[]){
         self::set($settings);
-        $vars['base'] = self::$file_base_path;
+        $vars = array_merge(['base'=>self::$file_base_path],$vars);
         return (new JoMiModule($name,self::$module_location,self::$file_base_path,$vars))->run(true);
     }
 

@@ -48,7 +48,7 @@ class JoMiSet {
      * @return bool
      */
     public function updated($updated){
-        return $this->upTime > ($updated??0);
+        return (($updated??0)!==0) && ($this->upTime < $updated);
     }
 
     /**

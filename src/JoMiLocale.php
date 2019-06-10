@@ -8,6 +8,7 @@ class JoMiLocale {
     private $location;
     private $updated = 0;
     private $toUpdate = false;
+    private $upSet = [];
     private $data = [];
 
     /**
@@ -25,7 +26,7 @@ class JoMiLocale {
      */
     public function __construct($name,$location,array $vars=[]){
         $this->name = $name;
-        foreach($vars as $var) $this->vars[] = $this->insertParameters($var,$this->vars);
+        foreach($vars as $k=>$var) $this->vars[$k] = $this->insertParameters($var,$this->vars);
         $this->location = $location.'/jomi-mods.json';
         $this->load();
     }
@@ -45,7 +46,7 @@ class JoMiLocale {
      */
     public function add($files,$into,$type){
         $this->sets[] = $set = new JoMiSet($files,$into,$type,$this->vars);
-        $this->toUpdate |= !$set->updated($this->updated);
+        $this->toUpdate |= ($this->upSet[]=!$set->updated($this->updated));
         return $this;
     }
 
@@ -56,7 +57,7 @@ class JoMiLocale {
     public function run($save=true){
         if(!$this->toUpdate) return true;
         $res = true;
-        foreach($this->sets as $set) $res &= $set->run();
+        foreach($this->sets as $k=>$set) if($this->upSet[$k]) $res &= $set->run();
         $this->data[$this->name] = time();
         if($save) $this->save();
         return $res;
