@@ -33,8 +33,8 @@ class JoMiSet {
      * @throws \Exception
      */
     protected function load($files,$into){
-        if(empty($this->files)) throw new \Exception('File to Minimize should not be empty.');
-        if(trim($this->into)==='') throw new \Exception('Into File should not be empty.');
+        if(empty($files)) throw new \Exception('Files to Minimize should not be empty.');
+        if(trim($into)==='') throw new \Exception('Into File should not be empty.');
 
         foreach($files as $k=>$file){
             $this->files[$k] = $this->insertParameters($file,$this->vars);
