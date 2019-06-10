@@ -2,7 +2,7 @@
 Minifier for PHP
 
 JoMi Joins and Minifies one or multiple files into one.
-It can use .json files (called modules) to configure file manipulations or via the class itself.
+It can use .json files (called modules) to configure file manipulations or do so via the class itself.
 Manipulations happen when any of the source files are changed, otherwise, no processing occurs.
 
 ## Installation
@@ -24,6 +24,8 @@ JoMi::runUsing() takes three arguments. The first represents the name of the mod
 Configurations:
 - "module-location" - Represents the folder where modules are stored
 - "file-base-path" - Represents the base folder of the files
+
+**Note:** The module-location is also the place JoMi uses to store and remember previous update times.
 
 The add method creates a minified instance of $arrayOfFiles pointing to $pathToDestination. The latter containing both the joined and the minified data (after running). The third and last argument establishes the type of files being handled, currently css or js files only. This argument is optional, and if it's not set, JoMi will look into the $pathToDestination file type (.css or .js) to make the decision.
 
