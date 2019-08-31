@@ -4,8 +4,8 @@ namespace JoMi;
 
 class JoMi {
 
-    protected static $module_location = __dir__."/../../../../var/jomi/";
-    protected static $file_base_path = __dir__."/../../../../";
+    public static $module_location = __dir__."/../../../../var/jomi/";
+    public static $file_base_path = __dir__."/../../../../";
 
     /**
      * @param string $name

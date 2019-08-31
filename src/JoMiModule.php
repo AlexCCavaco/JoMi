@@ -61,7 +61,7 @@ class JoMiModule {
             $data[] = $set->getData();
         }
         if($save&&$up) return $this->save($data);
-        return true;
+        return $up;
     }
 
     /**
