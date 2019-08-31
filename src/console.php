@@ -58,7 +58,7 @@ do {
         while($up===true){
             if($count===0||$options[1]==='all') $up=updateAll($data);
             else $up=update($options[1]);
-            sleep(500);
+            sleep(10);
         }
         break;
     } elseif($in==='exit'){
