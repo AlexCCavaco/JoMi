@@ -3,7 +3,7 @@
     "public": "{root}/public",
     "var": "{root}/var"
   },
-  "set":[
+  "join":[
     {
       "files":[
         "{var}/test1.css",
