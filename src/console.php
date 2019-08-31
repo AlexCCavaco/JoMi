@@ -3,7 +3,7 @@
 namespace JoMi;
 
 set_time_limit(0);
-require __dir__.'/../vendor/autoload.php';
+require __dir__.'/../../../../vendor/autoload.php';
 use JoMi\JoMi;
 
 function pe($message = '', $newline = true){ echo "\e[0;31m" . date('Y-m-d H:i:s') . ' /o\ ' . $message . "\e[0m" . ($newline ? "\n" : ''); };
