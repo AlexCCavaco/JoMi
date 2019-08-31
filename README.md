@@ -56,7 +56,7 @@ These can be assigned via "var" keys as shown in the example below.
     "public": "{root}/public",
     "var": "{root}/var"
   },
-  "set": [
+  "join": [
     {
       "files":[
         "{var}/test1.css",
