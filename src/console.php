@@ -4,7 +4,6 @@ namespace JoMi;
 
 set_time_limit(0);
 require __dir__.'/../../../../vendor/autoload.php';
-use JoMi\JoMi;
 
 function pe($message = '', $newline = true){ echo "\e[0;31m" . date('Y-m-d H:i:s') . ' /o\ ' . $message . "\e[0m" . ($newline ? "\n" : ''); };
 function pw($message = '', $newline = true){ echo "\e[1;33m" . date('Y-m-d H:i:s') . ' ~o~ ' . $message . "\e[0m" . ($newline ? "\n" : ''); };
@@ -38,12 +37,7 @@ do {
             pe('Command Malformed (type "help run")');
             continue;
         }
-        try {
-            JoMi::runModule($options[1]);
-        } catch(\Exception $e){
-            pe($e->getMessage());
-            continue;
-        }
+        update($options[1]);
     } elseif ($cmd==='list') {
         if(count($data)===0) pb('No modules found');
         foreach($data as $name=>$update){
@@ -71,6 +65,7 @@ do {
 pb('Goodbye!');
 
 function updateAll($data){
+    pb('Updating all Modules');
     foreach($data as $name=>$update){
         if(!update($name)) return false;
     }
