@@ -45,14 +45,21 @@ do {
         }
     } elseif ($cmd==='update') {
         $up = true;
+        $option = 'all'; $time = 10;
+        if($count>0)
+            if($count>1&&$options[1]==='-t') $time = $options[2];
+            else {
+                $option = $options[1];
+                if($count>2&&$options[2]==='-t') $time = $options[3];
+            }
         if(count($data)===0){
             pb('No modules found');
             continue;
         }
         while($up===true){
-            if($count===0||$options[1]==='all') $up=updateAll($data);
-            else $up=update($options[1]);
-            sleep(10);
+            if($option==='all') $up=updateAll($data);
+            else $up=update($option);
+            sleep($time);
         }
         break;
     } elseif($in==='exit'){
